@@ -18,6 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -30,45 +32,31 @@ Route::get('/', function () {
 */
 
 Route::group(['middleware' => ['web']], function () {
+
+    /**
+     * ROUTE Facade che definisce le rote standard per flusso di autenticazione.
+     * Richiama \Illuminate\Routing\Router::auth
+     */
+    Route::auth();
+
+
+    Route::get('/home', function () {
+        return view('home');
+    });
+
     /**
      * Show Task Dashboard
      */
-    Route::get('/tasks', function () {
-        $tasks = Task::orderBy('created_at', 'asc')->get();
+    Route::get('/tasks', 'TaskController@index');
 
-        return view('tasks', [
-            'tasks' => $tasks
-        ]);
-    });
 
     /**
      * Add New Task
      */
-    Route::post('/task', function (Request $request) {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return redirect('/tasks')
-                ->withInput()
-                ->withErrors($validator);
-        }
-
-        // Create The Task...
-        $task = new Task;
-        $task->name = $request->name;
-        $task->save();
-
-        return redirect('/tasks');
-    });
+    Route::post('/task', 'TaskController@store');
 
     /**
      * Delete Task
      */
-    Route::delete('/task/{task}', function (Task $task) {
-        $task->delete();
-
-        return redirect('/tasks');
-    });
+    Route::delete('/task/{task}', 'TaskController@delete');
 });

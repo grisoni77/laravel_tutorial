@@ -30,4 +30,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 - installato con composer:
 
-    composer create-project --prefer-dist --no-dev laravel/laravel <percorso_installazione>
+    composer create-project --prefer-dist --no-dev laravel/laravel percorso/a/installazione

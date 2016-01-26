@@ -14,9 +14,7 @@ use App\Task;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 
 
@@ -39,16 +37,15 @@ Route::group(['middleware' => ['web']], function () {
      */
     Route::auth();
 
-
-    Route::get('/home', function () {
-        return view('home');
-    });
+    /**
+     * Homepage area protetta
+     */
+    Route::get('/home', 'HomeController@home');
 
     /**
      * Show Task Dashboard
      */
     Route::get('/tasks', 'TaskController@index');
-
 
     /**
      * Add New Task
@@ -59,4 +56,28 @@ Route::group(['middleware' => ['web']], function () {
      * Delete Task
      */
     Route::delete('/task/{task}', 'TaskController@delete');
+
+    // EXPLICIT BINDING per recuperare i models soft deleted
+    Route::bind('deletedTask', function($task) {
+        return Task::withTrashed()->findOrFail($task);
+    });
+
+    /**
+     * HARD Delete Task
+     */
+    Route::delete('/task/{deletedTask}/hard', 'TaskController@hardDelete')->name('hard-delete');
+    /**
+     * Restore Task
+     */
+    Route::post('/task/{deletedTask}/restore', 'TaskController@restore')->name('restore');
+
+    /**
+     * Generate PDF Task
+     */
+    Route::get('/task/pdf/{task}', 'TaskController@taskToPDF');
 });
+
+//Route::get('/api/test', function() {
+//    return response()->json(['success'=>true])->header('Access-Control-Allow-Origin', 'http://www.consiglioregionale.piemonte.it');
+//});
+Route::resource('api/task', 'TaskRestController');

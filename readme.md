@@ -31,3 +31,8 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 - installato con composer:
 
     composer create-project --prefer-dist --no-dev laravel/laravel percorso/a/installazione
+
+## creazione controller REST (https://laravel.com/docs/5.2/controllers#restful-resource-controllers)
+
+    php artisan make:controller PhotoController --resource
+

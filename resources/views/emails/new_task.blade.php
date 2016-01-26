@@ -1,0 +1,1 @@
+nuovo task creato: {{ $task->name }}

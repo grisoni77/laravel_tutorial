@@ -58,12 +58,26 @@
                         </td>
 
                         <td>
+                            @if(!$task->deleted_at)
                             <form action="{{ url('task/'.$task->id) }}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
 
-                                <button>Delete Task</button>
+                                <button class="btn btn-warning">Delete Task</button>
                             </form>
+                            @else
+                            <form action="{{ URL::route('hard-delete', ['deletedTask'=>$task->id]) }}" method="POST">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+
+                                <button class="btn btn-danger">Hard delete Task</button>
+                            </form>
+                            <form action="{{ URL::route('restore', ['deletedTask'=>$task->id]) }}" method="POST">
+                                {{ csrf_field() }}
+
+                                <button class="btn btn-success">Restore Task</button>
+                            </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

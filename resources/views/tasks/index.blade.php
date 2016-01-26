@@ -55,6 +55,7 @@
                         <!-- Task Name -->
                         <td class="table-text">
                             <div>{{ $task->name }}</div>
+                            <small>by {{ $task->user->name }}</small>
                         </td>
 
                         <td>
@@ -86,4 +87,8 @@
         </div>
     </div>
 @endif
+
+    <pre>{{ print_r(DB::getQueryLog(), true) }}</pre>
+
 @endsection
+

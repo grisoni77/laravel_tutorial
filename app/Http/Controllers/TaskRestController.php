@@ -32,7 +32,16 @@ class TaskRestController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json($this->repository->forUser($request->user()));
+        $tasks = $this->repository->forUser($request->user())
+            ->reject(function(Task $task){
+                return $task->name[0] == 'p';
+            })
+            ->map(function(Task $task){
+                return $task->name;
+            })
+            ;
+        return response()->json($tasks->flatten());
+        //return response()->json($this->repository->forUser($request->user()));
     }
 
     /**

@@ -16,7 +16,9 @@ class TaskRepository
     public function forUser(User $user)
     {
 //        return $user->tasks()->getResults();
-        return Task::withTrashed()
+
+        return Task::with('user') // Eager loading: https://laravel.com/docs/5.2/eloquent-relationships#eager-loading
+            ->withTrashed()
             ->where('user_id', $user->id)
             ->orderBy('created_at', 'asc')
             ->get();
